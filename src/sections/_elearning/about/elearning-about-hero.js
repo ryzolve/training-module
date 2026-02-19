@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { Link } from '@mui/material';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { alpha, useTheme } from '@mui/material/styles';
 
 import Image from 'src/components/image';
 import { paths } from 'src/routes/paths';

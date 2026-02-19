@@ -15,7 +15,6 @@ import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import Logout from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 

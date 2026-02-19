@@ -24,6 +24,7 @@ const Result = ({
   questions,
   endTime,
   startTime,
+  isFinalQuiz,
   setPopupOpenOne,
   handleModalClose,
   metaDataId,
@@ -47,17 +48,31 @@ const Result = ({
   let message = '';
   let messageColor = '';
 
-  if (percentage >= passThreshold) {
-    message = 'Congratulations! You passed the course! Your certificate has been issued.';
+  if (isFinalQuiz) {
+    if (percentage >= passThreshold) {
+      message = 'Congratulations! You passed the final quiz! Your certificate has been issued.';
+      messageColor = 'success.main';
+    } else if (percentage >= 75) {
+      message = `Good effort! You need ${passThreshold}% on the final quiz to receive your certificate. Please try again.`;
+      messageColor = 'info.main';
+    } else if (percentage >= 50) {
+      message = `You need ${passThreshold}% on the final quiz to receive your certificate. Review the material and try again.`;
+      messageColor = 'warning.main';
+    } else {
+      message = `You need ${passThreshold}% on the final quiz to receive your certificate. Please review the material and try again.`;
+      messageColor = 'error.main';
+    }
+  } else if (percentage >= passThreshold) {
+    message = 'Great work! Unit quiz completed successfully.';
     messageColor = 'success.main';
   } else if (percentage >= 75) {
-    message = `Good effort! You need ${passThreshold}% to pass and receive your certificate. Please try again.`;
+    message = 'Good effort! Keep going and attempt again to improve your score.';
     messageColor = 'info.main';
   } else if (percentage >= 50) {
-    message = `You need ${passThreshold}% to pass and receive your certificate. Review the material and try again.`;
+    message = 'Keep practicing this unit and retake the quiz when ready.';
     messageColor = 'warning.main';
   } else {
-    message = `You need ${passThreshold}% to pass and receive your certificate. Please review the material and try again.`;
+    message = 'Review this unit and retry the quiz to improve.';
     messageColor = 'error.main';
   }
 
@@ -86,7 +101,7 @@ const Result = ({
             {message}
           </Typography>
 
-          {isPassing && (
+          {isFinalQuiz && isPassing && (
             <Alert severity="success" sx={{ mb: 3 }}>
               Your certificate is valid for 1 year. You can view it in your account under Certificates.
             </Alert>
@@ -153,7 +168,7 @@ const Result = ({
             backgroundColor: 'background.default',
           }}
         >
-          {isPassing ? (
+          {isFinalQuiz && isPassing ? (
             <Button href={paths.eLearning.account.vouchers} variant="contained">
               Certificates
             </Button>
@@ -186,6 +201,7 @@ Result.propTypes = {
   questions: PropTypes.array.isRequired,
   startTime: PropTypes.any,
   endTime: PropTypes.any,
+  isFinalQuiz: PropTypes.bool,
   setPopupOpenOne: PropTypes.bool,
   handleModalClose: PropTypes.any,
   metaDataId: PropTypes.string,

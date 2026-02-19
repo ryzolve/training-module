@@ -2,8 +2,8 @@
 
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
 import { useState, useCallback } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
 
 import { useUserStore } from 'src/states/auth-store';
 import { quizProgress } from 'src/states/quiz-progress';

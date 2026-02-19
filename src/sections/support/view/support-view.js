@@ -14,6 +14,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import SupportNav from '../support-nav';
 import SupportHero from '../support-hero';
 import SupportContent from '../support-content';
+import SupportHelpdeskForm from '../support-helpdesk-form';
 
 // ----------------------------------------------------------------------
 
@@ -102,6 +103,8 @@ export default function SupportView() {
 
           {TOPICS.map((item) => item.title === topic && <div key={item.title}>{item.content}</div>)}
         </Stack>
+
+        <SupportHelpdeskForm />
       </Container>
     </>
   );

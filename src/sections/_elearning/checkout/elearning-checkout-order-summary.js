@@ -17,8 +17,7 @@ import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { useCartStore } from 'src/states/cart';
 import { axiosClient } from 'src/utils/axiosClient';
-import TextMaxLine from 'src/components/text-max-line';
-import { fPercent, fCurrency } from 'src/utils/format-number';
+import { fCurrency } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 

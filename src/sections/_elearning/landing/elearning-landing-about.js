@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
-import { fShortenNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 

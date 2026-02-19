@@ -11,10 +11,10 @@ import ThemeProvider from 'src/theme';
 import { primaryFont } from 'src/theme/typography';
 import { LocalizationProvider } from 'src/locales';
 import ProgressBar from 'src/components/progress-bar';
+import { ChatWidget } from 'src/components/chat-widget';
 import MotionLazy from 'src/components/animate/motion-lazy';
 import { ReactQueryProvider } from 'src/utils/ReactQueryProvider';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
-import { ChatWidget } from 'src/components/chat-widget';
 
 // ----------------------------------------------------------------------
 

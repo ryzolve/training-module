@@ -25,11 +25,8 @@ import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutl
 import AccordionSummary, { accordionSummaryClasses } from '@mui/material/AccordionSummary';
 
 import Quiz from 'src/sections/quiz';
-import { paths } from 'src/routes/paths';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 // import { paths } from 'src/routes/paths';
 // import Player from 'src/components/player';
-import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Markdown from 'src/components/markdown';
 import { getUnitData } from 'src/queries/unit';
@@ -163,7 +160,9 @@ export default function ElearningCourseDetailsLessonsDialog({
             LessonTitle: l.LessonTitle,
             course_id: l.course_id,
             unitId: l.unitId,
+            entryType: l.entryType || 'lesson',
           }))
+          .filter((l) => l.entryType === 'lesson')
         );
       });
       if (res.data.length === 0) {
@@ -181,7 +180,10 @@ export default function ElearningCourseDetailsLessonsDialog({
     if (isMetaDataExisting.length > 0 || !metaDataId) return;
     const requestBody = {
       data: {
-        data: requiredData,
+        data: requiredData.map((entry) => ({
+          ...entry,
+          entryType: entry.entryType || 'lesson',
+        })),
       },
     };
     try {
@@ -210,6 +212,7 @@ export default function ElearningCourseDetailsLessonsDialog({
           {
             LessonTitle: id,
             course_id: params.id,
+            entryType: 'lesson',
           },
         ],
       },
@@ -466,6 +469,7 @@ export default function ElearningCourseDetailsLessonsDialog({
             userLessonData={userLessonData}
             _questions={unit?.attributes?.quiz}
             courseName={courseTitle}
+            courseId={params.id}
             score={scoreUnitQuiz}
             hasBoughtCourse={hasBoughtCourse}
             title={hasUnit ? 'Attempted. Click To Retry' : 'Start Test'}
@@ -506,6 +510,8 @@ export default function ElearningCourseDetailsLessonsDialog({
     >
       {unitList}
       <Quiz
+        metaDataId={metaDataId}
+        userLessonData={userLessonData}
         _questions={courseQuiz}
         courseName={courseTitle}
         score={scoreFinalQuiz}

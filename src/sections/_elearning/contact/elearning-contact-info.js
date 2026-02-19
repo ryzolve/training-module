@@ -1,14 +1,13 @@
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
-import ContactMap from 'src/components/map';
+import { _socials } from 'src/_mock';
 import Iconify from 'src/components/iconify';
-import { _socials, _offices } from 'src/_mock';
 
 // ----------------------------------------------------------------------
 

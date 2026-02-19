@@ -4,11 +4,8 @@ import { useQuery } from 'react-query';
 
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
 
-import Iconify from 'src/components/iconify';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { getCategoriesData } from 'src/queries/categories';
 

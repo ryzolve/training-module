@@ -240,17 +240,33 @@ export default function ElearningCourseItem({ course, vertical, isMyLearning, co
             {level}
           </Stack> */}
 
-          {!isMyLearning &&
-            (hasBoughtCourse ? (
-              <Link
-                component={RouterLink}
-                href={`${paths.eLearning.courses}/${id}`}
-                color="inherit"
-              >
-                <Button variant="contained" size="large" color="inherit" sx={{ width: 1 }}>
-                  Go to Course
-                </Button>
-              </Link>
+          {isMyLearning || hasBoughtCourse ? (
+              <Stack direction="column" spacing={1} sx={{ width: 1 }}>
+                <Link
+                  component={RouterLink}
+                  href={`${paths.eLearning.courses}/${id}?quiz=final`}
+                  color="inherit"
+                >
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    startIcon={<Iconify icon="carbon:exam-mode" />}
+                    sx={{ width: 1 }}
+                  >
+                    Take Final Quiz
+                  </Button>
+                </Link>
+                <Link
+                  component={RouterLink}
+                  href={`${paths.eLearning.courses}/${id}`}
+                  color="inherit"
+                >
+                  <Button variant="outlined" size="small" color="inherit" sx={{ width: 1 }}>
+                    Go to Course
+                  </Button>
+                </Link>
+              </Stack>
             ) : (
               <Box
                 sx={{
@@ -283,7 +299,7 @@ export default function ElearningCourseItem({ course, vertical, isMyLearning, co
                   )}
                 </IconButton>
               </Box>
-            ))}
+            )}
         </Stack>
       </Stack>
     </Card>

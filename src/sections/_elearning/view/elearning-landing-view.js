@@ -9,8 +9,6 @@ import { Box, Modal, Button, Typography } from '@mui/material';
 import { _testimonials } from 'src/_mock';
 import Iconify from 'src/components/iconify';
 import { axiosClient } from 'src/utils/axiosClient';
-import { getCoursesData } from 'src/queries/courses';
-import { SplashScreen } from 'src/components/loading-screen';
 
 import ElearningNewsletter from '../elearning-newsletter';
 import ElearningLandingFaqs from '../landing/elearning-landing-faqs';

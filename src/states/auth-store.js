@@ -18,8 +18,10 @@ const store = persist(
     },
     updateImage: (image) => {
       set((state) => ({
-        ...state.UserData,
-        image,
+        UserData: {
+          ...state.UserData,
+          image,
+        },
       }));
     },
     removeUserData: () => {

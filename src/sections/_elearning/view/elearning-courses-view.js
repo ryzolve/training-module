@@ -20,7 +20,6 @@ import { getCoursesData } from 'src/queries/courses';
 import { SplashScreen } from 'src/components/loading-screen';
 
 import ElearningNewsletter from '../elearning-newsletter';
-import ElearningFilters from '../filters/elearning-filters';
 import ElearningCourseList from '../list/elearning-course-list';
 
 // ----------------------------------------------------------------------

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-query';
 import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -7,14 +6,12 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 import { axiosClient } from 'src/utils/axiosClient';
-import { fPercent, fCurrency } from 'src/utils/format-number';
+import { fCurrency } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 

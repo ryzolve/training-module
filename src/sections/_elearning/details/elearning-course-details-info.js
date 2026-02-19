@@ -17,7 +17,7 @@ import ElearningReviewForm from 'src/sections/_elearning/contact/elearning-revie
 
 // ----------------------------------------------------------------------
 
-export default function ElearningCourseDetailsInfo({ course }) {
+export default function ElearningCourseDetailsInfo({ course, onSkipToFinalQuiz }) {
   const [reviewOpen, setReviewOpen] = useState(false);
 
   const [cart, addToCart, removeFromCart] = useCartStore((state) => [
@@ -116,8 +116,7 @@ export default function ElearningCourseDetailsInfo({ course }) {
         )} */}
 
         {!hasBoughtCourse ? (
-          <>
-            <Box
+          <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'space-around',
@@ -146,32 +145,42 @@ export default function ElearningCourseDetailsInfo({ course }) {
                 {isCourseInCart ? 'Add to cart' : 'Remove from cart'}
               </Button>
             </Box>
-          </>
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-          >
-            <Modal
-              open={reviewOpen}
-              onClose={() => setReviewOpen(false)}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <ElearningReviewForm setReviewOpen={setReviewOpen} />
-            </Modal>
+          <Stack spacing={2}>
             <Button
-              onClick={() => setReviewOpen(true)}
+              onClick={onSkipToFinalQuiz}
               variant="contained"
               size="large"
-              sx={{ width: '80%', backgroundColor: '#00031f', color: 'white' }}
+              color="primary"
+              startIcon={<Iconify icon="carbon:exam-mode" />}
             >
-              provide feedback
+              Take Final Quiz Now
             </Button>
-          </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}
+            >
+              <Modal
+                open={reviewOpen}
+                onClose={() => setReviewOpen(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <ElearningReviewForm setReviewOpen={setReviewOpen} />
+              </Modal>
+              <Button
+                onClick={() => setReviewOpen(true)}
+                variant="outlined"
+                size="large"
+                sx={{ width: '100%' }}
+              >
+                Provide Feedback
+              </Button>
+            </Box>
+          </Stack>
         )}
       </Stack>
     </Card>
@@ -180,4 +189,5 @@ export default function ElearningCourseDetailsInfo({ course }) {
 
 ElearningCourseDetailsInfo.propTypes = {
   course: PropTypes.object,
+  onSkipToFinalQuiz: PropTypes.func,
 };

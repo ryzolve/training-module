@@ -4,18 +4,12 @@ import { useQuery } from 'react-query';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import { Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
-import Iconify from 'src/components/iconify';
 import { getHeroData } from 'src/queries/Home';
-import SvgColor from 'src/components/svg-color';
-import { RouterLink } from 'src/routes/components';
-import { axiosClient } from 'src/utils/axiosClient';
-import TextMaxLine from 'src/components/text-max-line';
 import { varBounce, MotionContainer } from 'src/components/animate';
 
 // ----------------------------------------------------------------------

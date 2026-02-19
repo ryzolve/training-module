@@ -61,7 +61,11 @@ export default function QuizForm(props) {
       const data = await axiosClient.get('/api/quiz-scores');
 
       setQuizScore(
-        data?.data.data.filter((scoreData) => userData.username === scoreData.attributes.username)
+        data?.data.data.filter(
+          (scoreData) =>
+            userData.username === scoreData.attributes.username &&
+            (scoreData.attributes.quizType || 'final') === 'final'
+        )
       );
     };
     fetchScore();
@@ -260,6 +264,7 @@ export default function QuizForm(props) {
         {...(!mdUp && bootstrapDialogProperties)}
       >
         <QuizHookForm
+          quizType={finalQuiz ? 'final' : 'unit'}
           metaDataId={metaDataId}
           userLessonData={userLessonData}
           unitId={unitId}
@@ -269,6 +274,7 @@ export default function QuizForm(props) {
           courseId={courseId}
           handleModalClose={handleModalClose}
           startTime={startTime}
+          finalQuiz={finalQuiz}
           score={score}
           name={inputRef.current}
         />

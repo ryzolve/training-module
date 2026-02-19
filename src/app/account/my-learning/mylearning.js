@@ -34,6 +34,7 @@ export default function AccountPersonalView() {
   const userData = useUserStore((state) => state.UserData);
   const [quizScore, setQuizScore] = useState([]);
   const [userLessonData, setUserLessonData] = useState([]);
+  const [quizJourneyData, setQuizJourneyData] = useState([]);
 
   useEffect(() => {
     const fetchScore = async () => {
@@ -58,11 +59,16 @@ export default function AccountPersonalView() {
           },
         });
 
-        res?.data.forEach((list) => {
-          setUserLessonData(
-            list.data.map((l) => ({ LessonTitle: l.LessonTitle, course_id: l.course_id }))
-          );
-        });
+        const allEntries = (res?.data || []).flatMap((list) => list?.data || []);
+        setUserLessonData(
+          allEntries.filter((entry) => !entry?.entryType || entry?.entryType === 'lesson')
+        );
+        setQuizJourneyData(
+          allEntries.filter(
+            (entry) =>
+              entry?.entryType === 'quiz_unit' || entry?.entryType === 'quiz_final'
+          )
+        );
       } catch (error) {
         console.log(error);
       }
@@ -80,18 +86,21 @@ export default function AccountPersonalView() {
 
   const coursesCompletedFilter = () => {
     const courseScores = {};
+    const passThreshold = Number(process.env.NEXT_PUBLIC_PASS_THRESHOLD) || 90;
 
     quizScore.forEach((quizData) => {
       const { courseTitle, score } = quizData.attributes;
+      const numericScore = Number(score);
 
-      if (!courseScores[courseTitle] || score > courseScores[courseTitle].score) {
-        courseScores[courseTitle] = { score, courseTitle };
+      if (!courseScores[courseTitle] || numericScore > courseScores[courseTitle].score) {
+        courseScores[courseTitle] = { score: numericScore, courseTitle };
       }
     });
 
-    const completedCourses = Object.values(courseScores).filter(
-      (quizData) => (quizData.score / 10) * 100 >= 60
-    );
+    const completedCourses = Object.values(courseScores).filter((quizData) => {
+      const totalQuestions = 10;
+      return (quizData.score / totalQuestions) * 100 >= passThreshold;
+    });
 
     return completedCourses.length;
   };
@@ -109,6 +118,11 @@ export default function AccountPersonalView() {
     },
     {
       id: 3,
+      title: 'Quizzes Attempted',
+      score: quizJourneyData.length,
+    },
+    {
+      id: 4,
       title: 'Courses Completed',
       score: coursesCompletedFilter(),
     },

@@ -83,8 +83,6 @@ export default function ElearningCheckoutView({ courseId }) {
     price: attributes.price,
   }));
 
-  const updatedProducts = [...products, { id: 'tax', title: 'tax', price: taxAmount }];
-
   const ElearningCheckoutSchema = Yup.object().shape({
     userName: Yup.string(),
     emailAddress: Yup.string(),
@@ -133,7 +131,7 @@ export default function ElearningCheckoutView({ courseId }) {
     const requestBody = {
       username: UserData.username,
       email: UserData.email,
-      products: updatedProducts,
+      products,
       discount: Number(couponDiscount),
       user: UserData,
     };

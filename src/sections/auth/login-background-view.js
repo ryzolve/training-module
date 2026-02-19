@@ -1,9 +1,8 @@
 'use client';
 
 import * as Yup from 'yup';
-import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -11,7 +10,6 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -73,9 +71,14 @@ export default function LoginBackgroundView() {
     defaultValues,
   });
 
-  if (userdata.isLoggedIn) {
+  useEffect(() => {
+    if (!userdata?.isLoggedIn || !userdata?.authToken) {
+      return;
+    }
+
     getUserCourses();
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userdata?.isLoggedIn, userdata?.authToken]);
 
   const {
     handleSubmit,

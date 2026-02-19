@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { getTestimonialData } from 'src/queries/testimonials/index';
 import Carousel, { useCarousel, CarouselArrows } from 'src/components/carousel';
 
-import { TestimonialItemContent, TestimonialItemThumbnail } from './testimonial-item';
+import { TestimonialItemContent } from './testimonial-item';
 
 // ----------------------------------------------------------------------
 

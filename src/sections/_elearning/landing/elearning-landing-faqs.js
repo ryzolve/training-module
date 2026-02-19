@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary, { accordionSummaryClasses } from '@mui/material/AccordionSummary';
 
-import { _faqs } from 'src/_mock';
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { axiosClient } from 'src/utils/axiosClient';

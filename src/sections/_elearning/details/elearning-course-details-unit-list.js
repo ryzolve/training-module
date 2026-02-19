@@ -18,6 +18,7 @@ export default function ElearningCourseDetailsLessonList({
   courseName,
   courseId,
   refProp,
+  finalQuizRef,
 }) {
   const score = true;
   return (
@@ -36,7 +37,8 @@ export default function ElearningCourseDetailsLessonList({
           unitId={unit.id}
         />
       ))}
-      <Quiz
+      <div ref={finalQuizRef}>
+        <Quiz
         _questions={quiz}
         courseName={courseName}
         courseId={courseId}
@@ -45,6 +47,7 @@ export default function ElearningCourseDetailsLessonList({
         finalQuiz
         title="Final Test"
       />
+      </div>
     </div>
   );
 }
@@ -56,4 +59,5 @@ ElearningCourseDetailsLessonList.propTypes = {
   courseName: PropTypes.any,
   courseId: PropTypes.string,
   refProp: PropTypes.any,
+  finalQuizRef: PropTypes.any,
 };

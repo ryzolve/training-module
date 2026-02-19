@@ -6,11 +6,12 @@ import PropTypes from 'prop-types';
 import { useMemo, useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import Button from '@mui/material/Button';
+import { areArraysEqual } from '@mui/base';
 import Backdrop from '@mui/material/Backdrop';
 import IconButton from '@mui/material/IconButton';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -38,6 +39,8 @@ export default function QuizHookForm(props) {
     handleModalClose,
     courseName,
     courseId,
+    quizType,
+    finalQuiz,
     score,
     startTime,
     setPopupOpenOne,
@@ -100,17 +103,20 @@ export default function QuizHookForm(props) {
   };
 
   const userToken = localStorage.getItem('token');
+  const passThreshold = Number(process.env.NEXT_PUBLIC_PASS_THRESHOLD) || 90;
+  const resolvedQuizType = quizType === 'unit' ? 'unit' : 'final';
 
   const correctAnswers = useMemo(
     () =>
       questions.filter((q, i) =>
         typeof answers[i] === 'object'
-          ? // eslint-disable-next-line no-undef
-            areArraysEqual(q.correctAnswer, answers[i])
+          ? areArraysEqual(q.correctAnswer, answers[i])
           : q.correctAnswer === answers[i]
       ).length,
     [answers, questions]
   );
+
+  const quizPercentage = Number(((correctAnswers / questions.length) * 100).toFixed(2));
 
   console.log('UserData', UserData);
 
@@ -131,11 +137,12 @@ export default function QuizHookForm(props) {
         user: UserData.id,
         course: courseIdNum,
         totalQuestions: questions.length,
+        quizType: resolvedQuizType,
       },
     };
     try {
       console.log('Submitting quiz score with data:', JSON.stringify(requestBody, null, 2));
-      const response = await axiosClient.post('/api/quiz-scores', requestBody, {
+      await axiosClient.post('/api/quiz-scores', requestBody, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
@@ -146,44 +153,73 @@ export default function QuizHookForm(props) {
     }
   }
 
-  const addingUnitToUser = async () => {
-    console.log({ unitId });
-    console.log(userLessonData);
-    console.log('add unit to user');
-    // const requiredData = [...new Set([...userLessonData, { LessonTitle: id }])];
-    // const isMetaDataExisting = userLessonData.filter((details) => details.LessonTitle === id);
-    // eslint-disable-next-line object-shorthand
-    const requiredData = [userLessonData, { unitId }];
+  const recordQuizJourney = async () => {
+    if (!userToken || !UserData?.id) {
+      return;
+    }
 
-    // if (isMetaDataExisting.length > 0 || !metaDataId) return;
-    console.log({ requiredData });
-    const requestBody = {
-      data: {
-        data: requiredData,
-      },
+    const metadataUrl = process.env.NEXT_PUBLIC_METADATA_URL;
+    if (!metadataUrl) {
+      return;
+    }
+
+    const quizEntry = {
+      entryType: resolvedQuizType === 'final' ? 'quiz_final' : 'quiz_unit',
+      LessonTitle: resolvedQuizType === 'final' ? `final-${courseId}` : `unit-${unitId}`,
+      course_id: String(courseId || ''),
+      unitId: unitId ? String(unitId) : '',
+      quizScore: correctAnswers,
+      totalQuestions: questions.length,
+      percentage: quizPercentage,
+      passed: quizPercentage >= passThreshold,
+      attemptedAt: new Date().toISOString(),
+      courseTitle: courseName?.title || '',
     };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userToken}`,
+    };
+
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_METADATA_URL}/${metaDataId.id}`, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userToken}`,
+      const metadataResponse = await axios.get(metadataUrl, { headers });
+      const existingMetadata = metadataResponse?.data?.[0];
+
+      if (existingMetadata?.id) {
+        const existingEntries = Array.isArray(existingMetadata.data) ? existingMetadata.data : [];
+        const requestBody = {
+          data: {
+            data: [...existingEntries, quizEntry],
+          },
+        };
+
+        await axios.put(`${metadataUrl}/${existingMetadata.id}`, requestBody, { headers });
+        return;
+      }
+
+      const createRequestBody = {
+        data: {
+          users: {
+            connect: [UserData.id],
+          },
+          data: [...(Array.isArray(userLessonData) ? userLessonData : []), quizEntry],
         },
-      });
-      // queryClient.invalidateQueries({ queryKey: ['userProgress'] });
+      };
+
+      await axios.post(metadataUrl, createRequestBody, { headers });
     } catch (error) {
-      console.log(error);
+      console.error('Failed to record quiz journey:', error);
     }
   };
 
-  // console.log('correctAnswers', correctAnswers);
-  const submitQuiz = () => {
+  const submitQuiz = async () => {
     setFinishedQuiz(true);
-    addingUnitToUser();
-
     setEndTime(currentDate.toLocaleString());
 
+    await recordQuizJourney();
+
     if (score) {
-      addScoreToStrapi();
+      await addScoreToStrapi();
     }
   };
 
@@ -244,6 +280,7 @@ export default function QuizHookForm(props) {
             questions={questions}
             startTime={startTime}
             endTime={endTime}
+            isFinalQuiz={finalQuiz}
           />
         ) : (
           <Grid direction={{ xs: 'column-reverse', md: 'row' }} container className="h-full">
@@ -327,6 +364,8 @@ QuizHookForm.propTypes = {
   handleModalClose: PropTypes.func.isRequired,
   courseName: PropTypes.any,
   courseId: PropTypes.string,
+  quizType: PropTypes.oneOf(['unit', 'final']),
+  finalQuiz: PropTypes.bool,
   score: PropTypes.bool,
   startTime: PropTypes.any,
   setPopupOpenOne: PropTypes.bool,

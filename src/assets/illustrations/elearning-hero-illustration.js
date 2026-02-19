@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 
 import Image from 'src/components/image';
 
-import Icon from './pattern/icon';
 import Shape from './pattern/shape';
-import Label from './pattern/label';
 import Pattern02 from './pattern/pattern-02';
-import Pattern01 from './pattern/pattern-01';
 
 // ----------------------------------------------------------------------
 

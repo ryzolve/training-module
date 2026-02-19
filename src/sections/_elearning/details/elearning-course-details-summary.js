@@ -1,19 +1,16 @@
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import Iconify from 'src/components/iconify';
 import { useUserStore } from 'src/states/auth-store';
 
 import ElearningCourseDetailsUnitList from './elearning-course-details-unit-list';
 
 // ----------------------------------------------------------------------
 
-export default function ElearningCourseDetailsSummary({ course, courseId, refProp }) {
+export default function ElearningCourseDetailsSummary({ course, courseId, refProp, finalQuizRef }) {
   const userData = useUserStore((state) => state.UserData);
 
   const { isLoggedIn } = userData;
@@ -26,6 +23,7 @@ export default function ElearningCourseDetailsSummary({ course, courseId, refPro
     <Stack spacing={5}>
       <ElearningCourseDetailsUnitList
         refProp={refProp}
+        finalQuizRef={finalQuizRef}
         units={course.units?.data}
         quiz={course?.quiz}
         courseName={course}
@@ -103,4 +101,5 @@ ElearningCourseDetailsSummary.propTypes = {
   }),
   courseId: PropTypes.string,
   refProp: PropTypes.any,
+  finalQuizRef: PropTypes.any,
 };
