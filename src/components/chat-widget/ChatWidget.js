@@ -10,7 +10,7 @@ export default function ChatWidget() {
         (function(){
           var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
           s1.async=true;
-          s1.src='https://embed.tawk.to/69931c560c0e241c36362e84/1jhjadd64';
+          s1.src='https://embed.tawk.to/69922ad73a5ba51c3b88cf76/1jhhfemu5';
           s1.charset='UTF-8';
           s1.setAttribute('crossorigin','*');
           s0.parentNode.insertBefore(s1,s0);
