@@ -61,7 +61,6 @@ export default function AccountPersonalView() {
   });
 
   const {
-    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
@@ -108,7 +107,7 @@ export default function AccountPersonalView() {
         progress: undefined,
         theme: 'light',
       });
-      const resData = await response.json();
+      await response.json();
     } catch (error) {
       toast.error('error please try again', {
         position: 'bottom-right',
