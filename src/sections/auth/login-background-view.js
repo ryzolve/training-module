@@ -1,5 +1,7 @@
 'use client';
 
+import axios from 'axios';
+
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
@@ -88,7 +90,7 @@ export default function LoginBackgroundView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const { email: identifier, password } = data;
-      const response = await axiosClient.post('/api/auth/local/', {
+      const response = await axios.post(process.env.NEXT_PUBLIC_LOGIN_URL, {
         identifier,
         password,
       });

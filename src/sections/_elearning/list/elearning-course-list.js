@@ -62,7 +62,7 @@ export default function ElearningCourseList({ courses, loading, filters }) {
           textAlign: { xs: 'center', md: 'unset' },
         }}
       >
-        {courses
+        {(courses || [])
           .filter(filterCourseByText)
 
           .filter(filterByDuration)

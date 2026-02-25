@@ -38,15 +38,19 @@ export default function AccountPersonalView() {
 
   useEffect(() => {
     const fetchScore = async () => {
-      const data = await axiosClient.get('/api/quiz-scores', {
-        headers: {
-          Authorization: `Bearer ${userData.authToken}`,
-        },
-      });
+      try {
+        const data = await axiosClient.get('/api/quiz-scores', {
+          headers: {
+            Authorization: `Bearer ${userData.authToken}`,
+          },
+        });
 
-      setQuizScore(
-        data?.data.data.filter((scoreData) => userData.username === scoreData.attributes.username)
-      );
+        setQuizScore(
+          (data?.data?.data || []).filter((scoreData) => userData.username === scoreData.attributes.username)
+        );
+      } catch (error) {
+        console.error('Failed to fetch quiz scores:', error);
+      }
     };
     fetchScore();
 
@@ -109,17 +113,17 @@ export default function AccountPersonalView() {
     {
       id: 1,
       title: 'Courses Enrolled',
-      score: data ? data.data.length : 0,
+      score: data?.data ? data.data.length : 0,
     },
     {
       id: 2,
       title: 'Lessons Completed',
-      score: userLessonData.length,
+      score: userLessonData?.length || 0,
     },
     {
       id: 3,
       title: 'Quizzes Attempted',
-      score: quizJourneyData.length,
+      score: quizJourneyData?.length || 0,
     },
     {
       id: 4,
