@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const Certificate = ({ certificateData, certificateNames, userData }) => {
   const formattedDate = certificateData?.attributes?.issuedDate
@@ -7,6 +8,10 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
         day: '2-digit',
         year: 'numeric',
       })
+    : '';
+
+  const verifyUrl = certificateData?.id
+    ? `${process.env.NEXT_PUBLIC_RYZOLVE_MAIN}/verify/${certificateData.id}`
     : '';
 
   return (
@@ -56,8 +61,8 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-row items-center justify-between gap-[500px] text-base text-darkslategray font-montserrat">
-            <div className="flex flex-col items-center justify-center gap-[4px]">
+          <div className="flex flex-row items-end justify-between w-[850px] text-base text-darkslategray font-montserrat mt-4">
+            <div className="flex flex-col items-center justify-center gap-[4px] mb-2">
               <img
                 className="relative w-[120px] h-[63px]"
                 alt="signature"
@@ -68,36 +73,30 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
                 <div className="relative leading-[135%] font-semibold">
                   {certificateNames[0]?.name}
                 </div>
-                <div className="relative text-mini leading-[135%] font-medium text-dimgray inline-block w-[122px]">
+                <div className="relative text-[15px] leading-[135%] font-medium text-dimgray inline-block w-[122px]">
                   {certificateNames[0]?.designation}
                 </div>
               </div>
             </div>
-            {/* <div className="flex flex-col items-start justify-center gap-[14px]">
-                <img
-                  className="relative w-[72px] h-[73px]"
-                  alt=""
-                  src={certificateNames[1]?.signature.data.attributes.url}
-                />
-                <img className="relative w-[117px] h-px" alt="" src="/vector-10.svg" />
-                <div className="flex flex-col items-start justify-center gap-[4px]">
-                  <div className="relative leading-[135%] font-semibold">
-                    {certificateNames[1]?.name}
-                  </div>
-                  <div className="relative text-mini leading-[135%] font-medium text-dimgray inline-block w-[165px]">
-                    {certificateNames[1]?.designation}
-                  </div>
+            
+            {verifyUrl && (
+              <div className="flex flex-col items-center justify-center gap-[8px] mb-2">
+                <QRCodeCanvas value={verifyUrl} size={70} level="H" includeMargin />
+                <div className="text-[12px] text-dimgray font-montserrat tracking-tight font-medium w-[220px] text-center leading-snug">
+                  Scan to verify Certificate
                 </div>
-              </div> */}
-            <div className="flex flex-col items-center justify-center gap-[4px]">
+              </div>
+            )}
+
+            <div className="flex flex-col items-center justify-center gap-[4px] mb-6">
               <div className="relative leading-[135%] font-semibold">{formattedDate}</div>
-              <div className="relative text-mini leading-[135%] font-medium text-dimgray">
+              <div className="relative text-[15px] leading-[135%] font-medium text-dimgray">
                 Issuing date
               </div>
             </div>
           </div>
         </div>
-        {/* </div> */}
+
       </div>
     </div>
   );

@@ -115,7 +115,12 @@ export default function EcommerceAccountVouchersView() {
 
       try {
         const response = await axiosClient.get(
-          `/api/user-certificates?filters[user][id][$eq]=${userData.id}&populate=course,quizScore`
+          `/api/user-certificates?filters[user][id][$eq]=${userData.id}&populate=course,quizScore`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.authToken}`,
+            },
+          }
         );
         setCertificates(response?.data?.data || []);
       } catch (error) {
