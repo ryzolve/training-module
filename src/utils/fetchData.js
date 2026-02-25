@@ -6,8 +6,11 @@ const graphQLEndpoint = `${process.env.NEXT_PUBLIC_STRAPI_URL}/graphql`;
 const fetchData = async (query, { variables = {} }) => {
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`,
   };
+
+  if (process.env.NEXT_PUBLIC_STRAPI_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`;
+  }
 
   try {
     const { data } = await axios({
