@@ -89,7 +89,7 @@ export default function LoginBackgroundView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const { email: identifier, password } = data;
-      const response = await axios.post(process.env.NEXT_PUBLIC_LOGIN_URL, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/`, {
         identifier,
         password,
       });
