@@ -244,21 +244,6 @@ export default function ElearningCourseItem({ course, vertical, isMyLearning, co
               <Stack direction="column" spacing={1} sx={{ width: 1 }}>
                 <Link
                   component={RouterLink}
-                  href={`${paths.eLearning.courses}/${id}?quiz=final`}
-                  color="inherit"
-                >
-                  <Button
-                    variant="contained"
-                    size="large"
-                    color="primary"
-                    startIcon={<Iconify icon="carbon:exam-mode" />}
-                    sx={{ width: 1 }}
-                  >
-                    Take Final Quiz
-                  </Button>
-                </Link>
-                <Link
-                  component={RouterLink}
                   href={`${paths.eLearning.courses}/${id}`}
                   color="inherit"
                 >

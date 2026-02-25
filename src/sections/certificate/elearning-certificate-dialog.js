@@ -28,6 +28,7 @@ function normalizeCertificateData(certificateData, isUserCertificate, userData) 
     const course = attrs.course?.data?.attributes || {};
     const quizScore = attrs.quizScore?.data?.attributes || {};
     return {
+      id: certificateData?.id,
       attributes: {
         courseTitle: course.title || 'Unknown Course',
         firstname: quizScore.firstname || userData?.firstname,
