@@ -128,7 +128,8 @@ export default function EcommerceAccountVouchersView() {
       }
     };
     fetchCertificates();
-  }, [userData?.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData?.id, userData?.authToken]);
 
   // Separate active and expired certificates
   const activeCertificates = certificates.filter(

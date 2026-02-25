@@ -5,18 +5,18 @@ import { useQuery } from 'react-query';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import CancelIcon from '@mui/icons-material/Cancel';
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import Button from '@mui/material/Button';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
-import { getVerifyCertificateData } from 'src/queries/certificates/verify';
-import Certificate from 'src/sections/certificate/certificate';
 import { getCertificateData } from 'src/queries/certificates';
+import Certificate from 'src/sections/certificate/certificate';
+import { getVerifyCertificateData } from 'src/queries/certificates/verify';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +34,6 @@ export default function VerifyCertificateView({ id }) {
   const verificationData = verifyResult?.data;
   
   const isValid = verificationData?.attributes?.status === 'active';
-  const isExpired = verificationData?.attributes?.status === 'expired';
 
   const renderContent = () => {
     if (isLoadingVerify) {

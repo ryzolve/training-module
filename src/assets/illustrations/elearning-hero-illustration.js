@@ -12,10 +12,6 @@ import Pattern02 from './pattern/pattern-02';
 
 // ----------------------------------------------------------------------
 
-const varUp = {
-  animate: { y: [-8, 8, -8], x: [-4, 4, -4] },
-  transition: { duration: 8, repeat: Infinity },
-};
 
 const varDown = {
   animate: { y: [8, -8, 8], x: [4, -4, 4] },
@@ -34,19 +30,6 @@ const varRight = {
 function ElearningHeroIllustration({ sx, ...other }) {
   const theme = useTheme();
 
-  const GREEN = theme.palette.success.main;
-
-  const YELLOW = theme.palette.warning.main;
-
-  const BLUE = '#355EC9';
-
-  const PURPLE = '#9B3AB1';
-
-  const styleIconContent = {
-    fontSize: 22,
-    color: 'common.black',
-    fontWeight: 'fontWeightBold',
-  };
 
   return (
     <Box
