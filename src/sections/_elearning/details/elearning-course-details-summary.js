@@ -4,20 +4,11 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { useUserStore } from 'src/states/auth-store';
-
 import ElearningCourseDetailsUnitList from './elearning-course-details-unit-list';
 
 // ----------------------------------------------------------------------
 
-export default function ElearningCourseDetailsSummary({ course, courseId, refProp, finalQuizRef }) {
-  const userData = useUserStore((state) => state.UserData);
-
-  const { isLoggedIn } = userData;
-
-  const hasBoughtCourse =
-    isLoggedIn &&
-    course.users?.data.filter((user) => user.id === userData.id.toString()).length > 0;
+export default function ElearningCourseDetailsSummary({ course, courseId, refProp, finalQuizRef, hasBoughtCourse }) {
 
   return (
     <Stack spacing={5}>
@@ -102,4 +93,5 @@ ElearningCourseDetailsSummary.propTypes = {
   courseId: PropTypes.string,
   refProp: PropTypes.any,
   finalQuizRef: PropTypes.any,
+  hasBoughtCourse: PropTypes.bool,
 };

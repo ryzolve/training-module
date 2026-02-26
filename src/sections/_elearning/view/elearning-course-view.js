@@ -70,6 +70,13 @@ export default function ElearningCourseView({ courseId }) {
     refetchOnWindowFocus: !isQuizOpen,
   });
 
+  const userData = useUserStore((state) => state.UserData);
+  const { isLoggedIn } = userData;
+
+  const hasBoughtCourse =
+    isLoggedIn &&
+    data?.attributes?.users?.data?.filter((u) => u.id === userData.id.toString()).length > 0;
+
   if (isLoading) {
     return <SplashScreen />;
   }
@@ -98,6 +105,7 @@ export default function ElearningCourseView({ courseId }) {
               finalQuizRef={finalQuizRef}
               course={data?.attributes} 
               courseId={data?.id} 
+              hasBoughtCourse={hasBoughtCourse}
             />
           </Grid>
 
