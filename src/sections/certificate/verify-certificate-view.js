@@ -146,13 +146,14 @@ export default function VerifyCertificateView({ id }) {
 
         {/* Digital Preview */}
         {certificateNames && (
-          <Box sx={{ mt: 5, width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ mt: 5, width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Box
               sx={{
                 transform: { xs: 'scale(0.3)', sm: 'scale(0.5)', md: 'scale(0.7)', lg: 'scale(0.8)' },
                 transformOrigin: 'top center',
                 height: { xs: 260, sm: 420, md: 580, lg: 650 },
                 pointerEvents: 'none', // Make it read-only
+                mt: { xs: 4, md: 8 }, // Add top margin to prevent clipping
               }}
             >
               <Certificate

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { QRCodeCanvas } from 'qrcode.react';
+import Logo from 'src/components/logo';
 
 const Certificate = ({ certificateData, certificateNames, userData }) => {
   const formattedDate = certificateData?.attributes?.issuedDate
@@ -13,7 +14,6 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
   const verifyUrl = certificateData?.id
     ? `${process.env.NEXT_PUBLIC_RYZOLVE_MAIN}/verify/${certificateData.id}`
     : '';
-
   return (
     <div className="relative top-[calc(50%_-_397px)] left-[calc(50%_-_561.5px)] w-[1123px] h-[794px] text-26xl text-black font-montaga items-center text-center">
       <div className="absolute top-[calc(50%_-_372px)] left-[calc(50%_-_536.5px)] rounded-21xl box-border w-[1073px] h-[744px] border-[2px] border-solid border-lightgray overflow-hidden">
@@ -25,7 +25,7 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
         {/* <div className="absolute top-[calc(50%_-_397px)] left-[calc(50%_-_439.5px)] items-center text-center"> */}
         <div className="flex flex-col text-center items-center justify-center pt-[38px] px-0 pb-0 gap-[75px]">
           <div className="flex flex-col items-center justify-center gap-[18px]">
-            <img className="relative w-44 h-[35px]" alt="" src="/ryzolve-logo1.svg" />
+            <Logo sx={{ width: 176, height: 35, display: 'block' }} />
             <div className="flex flex-col items-center justify-center gap-[40px]">
               <div className="relative capitalize leading-[120%] inline-block w-[800px]">
                 <p className="m-0">CERTIFICATE OF RECOGNITION</p>
