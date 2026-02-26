@@ -72,13 +72,26 @@ export default function ElearningCourseView({ courseId }) {
   });
 
   const userData = useUserStore((state) => state.UserData);
-  const { isLoggedIn } = userData;
+  const { isLoggedIn, authToken } = userData;
+
+  const { data: userCourses, isLoading: isUserCoursesLoading } = useQuery({
+    queryKey: ['userCourses', userData?.id],
+    queryFn: async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/user-courses`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch user courses');
+      return res.json();
+    },
+    enabled: !!isLoggedIn && !!authToken,
+    refetchOnWindowFocus: false,
+  });
 
   const hasBoughtCourse =
     isLoggedIn &&
-    data?.attributes?.users?.data?.filter((user) => user.id === userData.id?.toString()).length > 0;
+    userCourses?.some((c) => c.id?.toString() === courseId?.toString());
 
-  if (isLoading) {
+  if (isLoading || (isLoggedIn && isUserCoursesLoading)) {
     return <SplashScreen />;
   }
 
@@ -96,7 +109,7 @@ export default function ElearningCourseView({ courseId }) {
         <Grid container spacing={{ xs: 5, md: 8 }}>
           {!mdUp && (
             <Grid xs={12}>
-              <ElearningCourseDetailsInfo course={data} onSkipToFinalQuiz={scrollToFinalQuiz} />
+              <ElearningCourseDetailsInfo course={data} hasBoughtCourse={hasBoughtCourse} onSkipToFinalQuiz={scrollToFinalQuiz} />
             </Grid>
           )}
 
@@ -112,7 +125,7 @@ export default function ElearningCourseView({ courseId }) {
 
           <Grid xs={12} md={5} lg={4}>
             <Stack spacing={5}>
-              {mdUp && <ElearningCourseDetailsInfo course={data} onSkipToFinalQuiz={scrollToFinalQuiz} />}
+              {mdUp && <ElearningCourseDetailsInfo course={data} hasBoughtCourse={hasBoughtCourse} onSkipToFinalQuiz={scrollToFinalQuiz} />}
 
               {/* <Advertisement
                 advertisement={{
