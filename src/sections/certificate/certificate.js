@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { QRCodeCanvas } from 'qrcode.react';
+
 import Logo from 'src/components/logo';
 
 const Certificate = ({ certificateData, certificateNames, userData }) => {
