@@ -38,17 +38,30 @@ export default function ElearningLessonsView({ params }) {
 
   const userData = useUserStore((state) => state.UserData);
 
-  const { isLoggedIn } = userData;
+  const { isLoggedIn, authToken } = userData;
+
+  const { data: userCourses, isLoading: isUserCoursesLoading } = useQuery({
+    queryKey: ['userCourses', userData?.id],
+    queryFn: async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/user-courses`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch user courses');
+      return res.json();
+    },
+    enabled: !!isLoggedIn && !!authToken,
+    refetchOnWindowFocus: false,
+  });
 
   const hasBoughtCourse =
     isLoggedIn &&
-    data?.attributes.users.data.filter((user) => user.id === userData.id.toString()).length > 0;
+    userCourses?.some((c) => c.id?.toString() === params.id?.toString());
 
   const handleSelectedLesson = (lesson) => {
     setSelectedLesson(lesson);
   };
 
-  if (isLoading) return <SplashScreen />;
+  if (isLoading || (isLoggedIn && isUserCoursesLoading)) return <SplashScreen />;
 
   if (!hasBoughtCourse) return router.push(paths.loginBackground);
 

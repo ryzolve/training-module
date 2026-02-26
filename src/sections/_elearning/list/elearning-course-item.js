@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -55,11 +56,24 @@ export default function ElearningCourseItem({ course, vertical, isMyLearning, co
 
   const userData = useUserStore((state) => state.UserData);
 
-  const { isLoggedIn } = userData;
+  const { isLoggedIn, authToken } = userData;
+
+  const { data: userCourses } = useQuery({
+    queryKey: ['userCourses', userData?.id],
+    queryFn: async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/user-courses`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch user courses');
+      return res.json();
+    },
+    enabled: !!isLoggedIn && !!authToken,
+    refetchOnWindowFocus: false,
+  });
 
   const hasBoughtCourse =
     isLoggedIn &&
-    users.data?.filter((user) => user.id.toString() === userData.id.toString()).length > 0;
+    userCourses?.some((c) => c.id?.toString() === id?.toString());
 
   const isCourseInCart = cart.filter((cartItem) => cartItem.id === id).length === 0;
 
