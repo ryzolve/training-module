@@ -11,13 +11,12 @@ import Typography from '@mui/material/Typography';
 import Iconify from 'src/components/iconify';
 import { useCartStore } from 'src/states/cart';
 import { fCurrency } from 'src/utils/format-number';
-import { useUserStore } from 'src/states/auth-store';
 import { useWishlistStore } from 'src/states/wishlist';
 import ElearningReviewForm from 'src/sections/_elearning/contact/elearning-review-form';
 
 // ----------------------------------------------------------------------
 
-export default function ElearningCourseDetailsInfo({ course, onSkipToFinalQuiz }) {
+export default function ElearningCourseDetailsInfo({ course, hasBoughtCourse, onSkipToFinalQuiz }) {
   const [reviewOpen, setReviewOpen] = useState(false);
 
   const [cart, addToCart, removeFromCart] = useCartStore((state) => [
@@ -31,14 +30,6 @@ export default function ElearningCourseDetailsInfo({ course, onSkipToFinalQuiz }
     state.addToWishlist,
     state.removeFromWishlist,
   ]);
-
-  const userData = useUserStore((state) => state.UserData);
-
-  const { isLoggedIn } = userData;
-
-  const hasBoughtCourse =
-    isLoggedIn &&
-    course?.attributes.users.data.filter((user) => user.id === userData.id.toString()).length > 0;
 
   const isCourseInCart = cart.filter((cartItem) => cartItem.id === course.id).length === 0;
 
@@ -189,5 +180,6 @@ export default function ElearningCourseDetailsInfo({ course, onSkipToFinalQuiz }
 
 ElearningCourseDetailsInfo.propTypes = {
   course: PropTypes.object,
+  hasBoughtCourse: PropTypes.bool,
   onSkipToFinalQuiz: PropTypes.func,
 };
