@@ -11,6 +11,3 @@
 
 - yarn add
 - yarn develop
-
-## Testing Auto deploy
-- This section can be removed.
