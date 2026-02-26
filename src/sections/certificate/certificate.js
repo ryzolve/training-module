@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { QRCodeCanvas } from 'qrcode.react';
+import Logo from 'src/components/logo';
 
 const Certificate = ({ certificateData, certificateNames, userData }) => {
   const formattedDate = certificateData?.attributes?.issuedDate
@@ -24,7 +25,7 @@ const Certificate = ({ certificateData, certificateNames, userData }) => {
         {/* <div className="absolute top-[calc(50%_-_397px)] left-[calc(50%_-_439.5px)] items-center text-center"> */}
         <div className="flex flex-col text-center items-center justify-center pt-[38px] px-0 pb-0 gap-[75px]">
           <div className="flex flex-col items-center justify-center gap-[18px]">
-            <img className="relative w-44 h-[35px]" alt="" src="/ryzolve-logo1.svg" />
+            <Logo sx={{ width: 176, height: 35, display: 'block' }} />
             <div className="flex flex-col items-center justify-center gap-[40px]">
               <div className="relative capitalize leading-[120%] inline-block w-[800px]">
                 <p className="m-0">CERTIFICATE OF RECOGNITION</p>
