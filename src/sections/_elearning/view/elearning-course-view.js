@@ -21,6 +21,7 @@ import { useRef, useEffect, useCallback } from 'react';
 
 // import { useBoolean } from 'src/hooks/use-boolean';
 import { getCourseData } from 'src/queries/course';
+import { useUserStore } from 'src/states/auth-store';
 import { quizProgress } from 'src/states/quiz-progress';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { SplashScreen } from 'src/components/loading-screen';
