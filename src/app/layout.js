@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import Script from 'next/script';
+import PropTypes from 'prop-types';
 
 import 'src/global.css';
 
