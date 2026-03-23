@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import Script from 'next/script';
 
 import 'src/global.css';
 
@@ -55,6 +56,9 @@ export default function RootLayout({ children }) {
   return (
     <ReactQueryProvider>
       <html lang="en" className={primaryFont.className}>
+        <head>
+          <Script src="https://t.contentsquare.net/uxa/eb7f21fdbf12f.js" strategy="afterInteractive" />
+        </head>
         <body>
           <LocalizationProvider>
             <SettingsProvider
