@@ -96,24 +96,23 @@ export const presetOptions = [
     },
   },
 
-  // BLUE - ORANGE
+  // RYZOLVE BRAND — Navy + Orange
   {
     name: 'blue',
     primary: {
-      lighter: '#CCF4FE',
-      light: '#68CDF9',
-      main: '#007aff',
-      dark: '#0956b5',
-      darker: '#012972',
+      lighter: '#D6E8F5',
+      light: '#5A9BC7',
+      main: '#0D5992',
+      dark: '#094573',
+      darker: '#052D4D',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      lighter: '#FFF3D8',
-      light: '#FFD18B',
-      main: '#FF5500',
-      dark: '#B75D1F',
-      darker: '#7A2D0C',
-      // contrastText: palette.grey[800],
+      lighter: '#FFE4D6',
+      light: '#FFB08A',
+      main: '#FF774C',
+      dark: '#CC5F3D',
+      darker: '#8C3F28',
       contrastText: '#FFFFFF',
     },
   },
