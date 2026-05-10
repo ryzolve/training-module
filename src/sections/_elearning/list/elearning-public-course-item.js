@@ -1,0 +1,140 @@
+import PropTypes from 'prop-types';
+
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+
+import Image from 'src/components/image';
+import Iconify from 'src/components/iconify';
+import TextMaxLine from 'src/components/text-max-line';
+import { fCurrency } from 'src/utils/format-number';
+import { getNewPlatformCourseUrl } from 'src/queries/elearning-public';
+
+// ----------------------------------------------------------------------
+// Public-catalog card. Buy CTA points at the new platform's slug-based
+// course detail page, where the auto=1 query param triggers Stripe checkout
+// on hydration if the user is already signed in.
+// ----------------------------------------------------------------------
+
+export default function ElearningPublicCourseItem({ course, vertical }) {
+  const { attributes } = course;
+  const { title, price, time, description, image, slug } = attributes;
+
+  const detailHref = `/e-learning/course?slug=${encodeURIComponent(slug)}`;
+  const buyHref = getNewPlatformCourseUrl(slug, { autoBuy: true });
+
+  return (
+    <Card
+      sx={{
+        display: { sm: 'flex' },
+        width: { md: '100%' },
+        '&:hover': {
+          boxShadow: (theme) => theme.customShadows.z24,
+        },
+        ...(vertical && {
+          flexDirection: 'column',
+        }),
+      }}
+    >
+      <Box sx={{ flexShrink: { sm: 0 } }}>
+        <Link href={detailHref} color="inherit">
+          <Image
+            alt={title}
+            src={image}
+            sx={{
+              height: 1,
+              width: { sm: 240, md: 270 },
+              ...(vertical && {
+                width: { sm: 1 },
+              }),
+            }}
+          />
+        </Link>
+      </Box>
+
+      <Stack spacing={3} sx={{ p: 3 }} width="100%">
+        <Stack
+          spacing={{
+            xs: 3,
+            sm: vertical ? 3 : 1,
+          }}
+        >
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Typography variant="h4">{fCurrency(price)}</Typography>
+          </Stack>
+
+          <Stack spacing={1}>
+            <Link href={detailHref} color="inherit">
+              <TextMaxLine variant="h6">{title}</TextMaxLine>
+            </Link>
+
+            <TextMaxLine
+              variant="body2"
+              sx={{
+                ...(vertical && {
+                  display: { sm: 'none' },
+                }),
+              }}
+            >
+              {description}
+            </TextMaxLine>
+          </Stack>
+        </Stack>
+
+        <Divider
+          sx={{
+            borderStyle: 'dashed',
+            display: { sm: 'none' },
+            ...(vertical && {
+              display: 'block',
+            }),
+          }}
+        />
+
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ color: 'text.disabled', '& > *:not(:last-child)': { mr: 2.5 } }}
+        >
+          {time > 0 && (
+            <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
+              <Iconify icon="carbon:time" sx={{ mr: 1 }} /> {`${time} hours`}
+            </Stack>
+          )}
+
+          <Button
+            component="a"
+            href={buyHref}
+            variant="contained"
+            size="small"
+            color="secondary"
+            sx={{ ml: 'auto' }}
+          >
+            Buy now
+          </Button>
+        </Stack>
+      </Stack>
+    </Card>
+  );
+}
+
+ElearningPublicCourseItem.propTypes = {
+  course: PropTypes.shape({
+    id: PropTypes.any,
+    attributes: PropTypes.shape({
+      title: PropTypes.string,
+      price: PropTypes.number,
+      time: PropTypes.number,
+      description: PropTypes.string,
+      image: PropTypes.string,
+      slug: PropTypes.string,
+    }),
+  }),
+  vertical: PropTypes.bool,
+};
