@@ -92,7 +92,9 @@ export default function ElearningLandingView() {
               </Typography>
             </Box>
 
-            <Link href="/courses">
+            {/* /courses is 308-redirected to learn.ryzolve.app — point at
+                the kept marketing catalog at /e-learning/courses. */}
+            <Link href="/e-learning/courses">
               <Button sx={{ left: '40%', bgcolor: '#FF774C', mt: 1, color: 'black' }}>
                 Buy Now
               </Button>

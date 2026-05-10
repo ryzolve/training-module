@@ -1,8 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useQuery } from 'react-query';
-import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';

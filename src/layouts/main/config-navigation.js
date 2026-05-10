@@ -125,7 +125,9 @@ export const navConfig = [
       },
     ],
   },
-  { title: 'Courses', path: '/courses' },
+  // /courses is 308-redirected to learn.ryzolve.app — point at the kept
+  // marketing catalog at /e-learning/courses instead.
+  { title: 'Courses', path: '/e-learning/courses' },
   { title: 'Contact', path: '/contact' },
   { title: 'About Us', path: '/about-us' },
 

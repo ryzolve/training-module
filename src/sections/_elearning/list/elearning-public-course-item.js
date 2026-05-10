@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import TextMaxLine from 'src/components/text-max-line';
 import { fCurrency } from 'src/utils/format-number';
+import TextMaxLine from 'src/components/text-max-line';
 import { getNewPlatformCourseUrl } from 'src/queries/elearning-public';
 
 // ----------------------------------------------------------------------
