@@ -49,10 +49,9 @@ const APP_ROUTE_PATTERNS = [
 export function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  for (const { match, to } of APP_ROUTE_PATTERNS) {
-    if (match.test(pathname)) {
-      return NextResponse.redirect(to, 308);
-    }
+  const hit = APP_ROUTE_PATTERNS.find(({ match }) => match.test(pathname));
+  if (hit) {
+    return NextResponse.redirect(hit.to, 308);
   }
 
   return NextResponse.next();
