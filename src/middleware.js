@@ -25,9 +25,8 @@ const APP_ROUTE_PATTERNS = [
   { match: /^\/account(?:\/|$)/, to: 'https://learn.ryzolve.app/settings' },
   { match: /^\/my-learning(?:\/|$)/, to: 'https://learn.ryzolve.app/my-courses' },
 
-  // Course consumption — legacy id-based URLs map to slug-based on new platform.
-  // Lossy fallback: route to the catalog list on the new platform.
-  { match: /^\/courses(?:\/|$)/, to: 'https://learn.ryzolve.app/courses' },
+  // Course consumption. Slug detail redirects are handled dynamically in
+  // middleware() so we can preserve /courses/:slug.
   { match: /^\/lesson(?:\/|$)/, to: 'https://learn.ryzolve.app/my-courses' },
   { match: /^\/quiz(?:\/|$)/, to: 'https://learn.ryzolve.app/my-courses' },
 
@@ -48,6 +47,16 @@ const APP_ROUTE_PATTERNS = [
 
 export function middleware(req) {
   const { pathname } = req.nextUrl;
+
+  if (pathname === '/courses' || pathname === '/courses/') {
+    return NextResponse.redirect('https://learn.ryzolve.app/courses', 308);
+  }
+
+  const legacyCourseDetail = pathname.match(/^\/courses\/([^/]+)\/?$/);
+  if (legacyCourseDetail) {
+    const slug = legacyCourseDetail[1];
+    return NextResponse.redirect(`https://learn.ryzolve.app/courses/${encodeURIComponent(slug)}`, 308);
+  }
 
   const hit = APP_ROUTE_PATTERNS.find(({ match }) => match.test(pathname));
   if (hit) {

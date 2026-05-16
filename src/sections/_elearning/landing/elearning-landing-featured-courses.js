@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
 
 import Box from '@mui/material/Box';
@@ -7,94 +6,19 @@ import Container from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { getOrdersData } from 'src/queries/orders';
-import { axiosClient } from 'src/utils/axiosClient';
-import { useUserStore } from 'src/states/auth-store';
-import { getCoursesData } from 'src/queries/courses';
 import { useResponsive } from 'src/hooks/use-responsive';
+import { getPublicCoursesData } from 'src/queries/elearning-public';
 import Carousel, { useCarousel, CarouselArrows } from 'src/components/carousel';
 
-import ElearningCourseItem from '../list/elearning-course-item';
+import ElearningPublicCourseItem from '../list/elearning-public-course-item';
 
 // ----------------------------------------------------------------------
 
-export default function ElearningLandingFeaturedCourses({ configuration }) {
+export default function ElearningLandingFeaturedCourses() {
   const { data } = useQuery({
-    queryKey: ['courses'],
-    queryFn: getCoursesData,
+    queryKey: ['public-courses', 'featured'],
+    queryFn: getPublicCoursesData,
   });
-
-  const userData = useUserStore((state) => state.UserData);
-
-  const {
-    data: orders,
-    // isLoading
-  } = useQuery({
-    queryKey: ['orders', userData.id],
-    queryFn: getOrdersData,
-    select: (ordersData) =>
-      ordersData.filter((orderData) => userData.username === orderData.attributes.username),
-  });
-
-  const removeUserToCourse = (orderId) => {
-    const expiredOrder = orders?.find((order) => order.id === orderId);
-    if (expiredOrder.attributes.expired === false) {
-      expiredOrder.attributes.products.map((product) =>
-        axiosClient
-          .put(`/api/courses/${product.id}`, {
-            data: {
-              users: {
-                disconnect: [userData.id],
-              },
-            },
-          })
-          .then((res) => {
-            axiosClient.put(`/api/orders/${orderId}`, {
-              data: {
-                expired: true,
-              },
-            });
-          })
-          .catch((err) => console.log(err))
-      );
-    }
-  };
-
-  orders?.forEach((order) => {
-    const createdDate = new Date(order.attributes.createdAt);
-    const currentDate = new Date();
-
-    const timeDifference = createdDate.getTime() - currentDate.getTime();
-
-    const hoursDifference = Math.abs(timeDifference / (1000 * 60 * 60));
-    if (hoursDifference > 1000) {
-      removeUserToCourse(order.id);
-      // console.log('course expired');
-    }
-  });
-  // console.log(createdAt);
-
-  // const totalHours = 8760;
-
-  // const givenDate = new Date(createdAt?.map((date) => date));
-
-  // // console.log(givenDate);
-
-  // const currentDate = new Date();
-
-  // const timeDifference = givenDate.getTime() - currentDate.getTime();
-
-  // const hoursDifference = Math.abs(timeDifference / (1000 * 60 * 60));
-
-  // console.log(hoursDifference);
-
-  // console.log('orderDate', createdAt.substring(0, 4));
-
-  // console.log('orderDate', createdAt[0]);
-
-  // if (hoursDifference > 0.15) {
-  //   removeUserToCourse();
-  // }
 
   const theme = useTheme();
 
@@ -178,7 +102,7 @@ export default function ElearningLandingFeaturedCourses({ configuration }) {
                     pb: { xs: 6, md: 8 },
                   }}
                 >
-                  <ElearningCourseItem course={course} configuration={configuration} vertical />
+                  <ElearningPublicCourseItem course={course} vertical />
                 </Box>
               ))}
             </Carousel>
@@ -188,8 +112,3 @@ export default function ElearningLandingFeaturedCourses({ configuration }) {
     </Box>
   );
 }
-
-ElearningLandingFeaturedCourses.propTypes = {
-  courses: PropTypes.array,
-  configuration: PropTypes.any,
-};
