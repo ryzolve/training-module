@@ -58,8 +58,8 @@ export default function ElearningPublicCourseView() {
           Browse the{' '}
           <Link href={paths.eLearning.courses} color="primary">
             full catalog
-          </Link>
-          {' '}to find a course.
+          </Link>{' '}
+          to find a course.
         </Typography>
       </Container>
     );
@@ -75,15 +75,19 @@ export default function ElearningPublicCourseView() {
           That course doesn&apos;t exist or has been moved. Browse the{' '}
           <Link href={paths.eLearning.courses} color="primary">
             full catalog
-          </Link>
-          {' '}to find what you&apos;re looking for.
+          </Link>{' '}
+          to find what you&apos;re looking for.
         </Typography>
       </Container>
     );
   }
 
   const course = data.attributes;
-  const buyHref = getNewPlatformCourseUrl(course.slug, { autoBuy: true });
+  const buyHref = getNewPlatformCourseUrl(course.slug, {
+    autoBuy: true,
+    catalogType: course.catalogType,
+  });
+  const isAgencyBundle = course.catalogType === 'agency_bundle';
 
   return (
     <>
@@ -119,9 +123,10 @@ export default function ElearningPublicCourseView() {
                 }}
               >
                 <Image
+                  ratio="4/3"
                   alt={course.title}
-                  src={course.image}
-                  sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                  src={course.image || '/assets/images/course/course_hero.svg'}
+                  sx={{ width: '100%', bgcolor: 'background.neutral' }}
                 />
               </Stack>
             </Grid>
@@ -182,6 +187,13 @@ export default function ElearningPublicCourseView() {
                       </Stack>
                     )}
 
+                    {course.courseCount > 0 && (
+                      <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
+                        <Iconify icon="carbon:book" sx={{ mr: 1 }} />
+                        {`${course.courseCount} included courses`}
+                      </Stack>
+                    )}
+
                     <Stack direction="row" sx={{ typography: 'subtitle2' }}>
                       <Iconify icon="carbon:certificate" sx={{ mr: 1 }} />
                       <span>Certificate of completion</span>
@@ -204,7 +216,7 @@ export default function ElearningPublicCourseView() {
         <Grid container spacing={{ xs: 5, md: 8 }}>
           {!mdUp && (
             <Grid xs={12}>
-              <BuyCard course={course} buyHref={buyHref} />
+              <BuyCard course={course} buyHref={buyHref} isAgencyBundle={isAgencyBundle} />
             </Grid>
           )}
 
@@ -216,12 +228,7 @@ export default function ElearningPublicCourseView() {
 
                   <Stack direction="row" flexWrap="wrap" spacing={1}>
                     {course.Skills.map((skill) => (
-                      <Chip
-                        key={skill.id}
-                        label={skill.points}
-                        size="small"
-                        variant="soft"
-                      />
+                      <Chip key={skill.id} label={skill.points} size="small" variant="soft" />
                     ))}
                   </Stack>
                 </Stack>
@@ -230,7 +237,11 @@ export default function ElearningPublicCourseView() {
           </Grid>
 
           <Grid xs={12} md={5} lg={4}>
-            <Stack spacing={5}>{mdUp && <BuyCard course={course} buyHref={buyHref} />}</Stack>
+            <Stack spacing={5}>
+              {mdUp && (
+                <BuyCard course={course} buyHref={buyHref} isAgencyBundle={isAgencyBundle} />
+              )}
+            </Stack>
           </Grid>
         </Grid>
       </Container>
@@ -242,16 +253,20 @@ export default function ElearningPublicCourseView() {
 
 // ----------------------------------------------------------------------
 
-function BuyCard({ course, buyHref }) {
+function BuyCard({ course, buyHref, isAgencyBundle }) {
+  const priceText = course.priceLabel || fCurrency(course.price);
+
   return (
     <Card sx={{ p: 3, borderRadius: 2 }}>
       <Stack spacing={3}>
         <Stack direction="row" sx={{ typography: 'h3' }}>
-          {fCurrency(course.price)}
+          {priceText}
         </Stack>
 
         <Stack spacing={2}>
-          <Typography variant="subtitle2">This course includes:</Typography>
+          <Typography variant="subtitle2">
+            {isAgencyBundle ? 'This package includes:' : 'This course includes:'}
+          </Typography>
 
           {course.time > 0 && (
             <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
@@ -260,9 +275,16 @@ function BuyCard({ course, buyHref }) {
             </Stack>
           )}
 
+          {course.courseCount > 0 && (
+            <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
+              <Iconify icon="carbon:book" sx={{ mr: 1 }} />
+              {`${course.courseCount} included courses`}
+            </Stack>
+          )}
+
           <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
             <Iconify icon="carbon:data-accessor" sx={{ mr: 1 }} />
-            One year access of course
+            {isAgencyBundle ? 'Access managed from agency dashboard' : 'One year access of course'}
           </Stack>
 
           <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
@@ -284,7 +306,7 @@ function BuyCard({ course, buyHref }) {
           color="secondary"
           sx={{ width: 1 }}
         >
-          Buy now
+          {course.ctaLabel || 'Buy now'}
         </Button>
       </Stack>
     </Card>
@@ -295,4 +317,5 @@ BuyCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   course: PropTypes.object.isRequired,
   buyHref: PropTypes.string.isRequired,
+  isAgencyBundle: PropTypes.bool.isRequired,
 };
