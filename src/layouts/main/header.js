@@ -22,12 +22,12 @@ import NavDesktop from './nav/desktop';
 import { navConfig } from './config-navigation';
 
 // ----------------------------------------------------------------------
-// Cutover: this header is now stateless w/r/t auth, cart and wishlist —
-// all of those concerns live on learn.ryzolve.app. The "Login" button
-// is a plain anchor to the new platform's auth route.
+// Cutover: this header is now stateless w/r/t auth, cart and wishlist.
+// Caregiver and agency users authenticate in their new platform apps.
 // ----------------------------------------------------------------------
 
-const NEW_PLATFORM_LOGIN_URL = 'https://learn.ryzolve.app/auth/login';
+const AGENCY_LOGIN_URL = 'https://agency.ryzolve.app/auth/login';
+const CAREGIVER_LOGIN_URL = 'https://learn.ryzolve.app/auth/login';
 
 const defaultConfig = {
   itemGap: 4,
@@ -87,11 +87,19 @@ export default function Header({ headerOnDark }) {
             justifyContent="flex-end"
           >
             {mdUp && (
-              <Link href={NEW_PLATFORM_LOGIN_URL}>
-                <Button variant="contained" color="secondary">
-                  Training Login
-                </Button>
-              </Link>
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Link href={CAREGIVER_LOGIN_URL}>
+                  <Button variant="contained" color="secondary">
+                    Caregiver Login
+                  </Button>
+                </Link>
+
+                <Link href={AGENCY_LOGIN_URL}>
+                  <Button variant="outlined" color="inherit">
+                    Agency Login
+                  </Button>
+                </Link>
+              </Stack>
             )}
 
             {!mdUp && <NavMobile data={navConfig} />}

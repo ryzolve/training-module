@@ -20,7 +20,8 @@ import NavList from './nav-list';
 
 // ----------------------------------------------------------------------
 
-const NEW_PLATFORM_LOGIN_URL = 'https://learn.ryzolve.app/auth/login';
+const AGENCY_LOGIN_URL = 'https://agency.ryzolve.app/auth/login';
+const CAREGIVER_LOGIN_URL = 'https://learn.ryzolve.app/auth/login';
 
 export default function NavMobile({ data }) {
   const pathname = usePathname();
@@ -58,10 +59,16 @@ export default function NavMobile({ data }) {
               <NavList key={link.title} item={link} navConfig={data} />
             ))}
 
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href={NEW_PLATFORM_LOGIN_URL} sx={{ width: '80%' }}>
+            <Box sx={{ px: 2.5, mt: 2, gap: 1.5, display: 'grid' }}>
+              <Link href={CAREGIVER_LOGIN_URL} sx={{ width: 1 }}>
                 <Button fullWidth variant="contained" color="inherit">
-                  Login
+                  Caregiver Login
+                </Button>
+              </Link>
+
+              <Link href={AGENCY_LOGIN_URL} sx={{ width: 1 }}>
+                <Button fullWidth variant="outlined" color="inherit">
+                  Agency Login
                 </Button>
               </Link>
             </Box>

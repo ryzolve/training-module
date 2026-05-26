@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 import ElearningPublicCourseItem from './elearning-public-course-item';
 import ElearningCourseItemSkeleton from './elearning-course-item-skeleton';
@@ -17,26 +17,29 @@ export default function ElearningPublicCourseList({ courses, loading, filters })
     return course.attributes.title.toLowerCase().includes(filters.text.toLowerCase());
   };
 
+  const items = loading ? Array.from({ length: 3 }) : (courses || []).filter(filterCourseByText);
+
   return (
-    <Stack
-      spacing={3}
-      direction={{ xs: 'column', md: 'row' }}
-      flexWrap={{ md: 'wrap' }}
-      alignItems={{ md: 'flex-start' }}
+    <Box
       sx={{
+        gap: 3,
+        display: 'grid',
         textAlign: { xs: 'center', md: 'unset' },
+        gridTemplateColumns: {
+          xs: 'minmax(0, 1fr)',
+          sm: 'repeat(2, minmax(0, 1fr))',
+          md: 'repeat(3, minmax(0, 1fr))',
+        },
       }}
     >
-      {(courses || [])
-        .filter(filterCourseByText)
-        .map((course, index) =>
-          course ? (
-            <ElearningPublicCourseItem key={course.id} course={course} vertical />
-          ) : (
-            <ElearningCourseItemSkeleton key={index} />
-          )
-        )}
-    </Stack>
+      {items.map((course, index) =>
+        course ? (
+          <ElearningPublicCourseItem key={course.id} course={course} vertical />
+        ) : (
+          <ElearningCourseItemSkeleton key={index} />
+        )
+      )}
+    </Box>
   );
 }
 

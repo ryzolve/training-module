@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -15,48 +16,57 @@ import TextMaxLine from 'src/components/text-max-line';
 import { getNewPlatformCourseUrl } from 'src/queries/elearning-public';
 
 // ----------------------------------------------------------------------
-// Public-catalog card. Buy CTA points at the new platform's slug-based
-// course detail page, where the auto=1 query param triggers Stripe checkout
-// on hydration if the user is already signed in.
+// Public-catalog card. Individual courses link to the learner app checkout;
+// agency packages link to the agency signup flow.
 // ----------------------------------------------------------------------
 
 export default function ElearningPublicCourseItem({ course, vertical }) {
   const { attributes } = course;
-  const { title, price, time, description, image, slug } = attributes;
+  const {
+    title,
+    price,
+    time,
+    description,
+    image,
+    slug,
+    ctaLabel,
+    priceLabel,
+    courseCount,
+    catalogType,
+  } = attributes;
 
   const detailHref = `/e-learning/course?slug=${encodeURIComponent(slug)}`;
-  const buyHref = getNewPlatformCourseUrl(slug, { autoBuy: true });
+  const buyHref = getNewPlatformCourseUrl(slug, { autoBuy: true, catalogType });
+  const displayPrice = priceLabel || fCurrency(price);
+  const imageSrc = image || '/assets/images/course/course_hero.svg';
 
   return (
     <Card
       sx={{
-        display: { sm: 'flex' },
-        width: { md: '100%' },
+        height: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        width: 1,
         '&:hover': {
           boxShadow: (theme) => theme.customShadows.z24,
         },
-        ...(vertical && {
-          flexDirection: 'column',
-        }),
       }}
     >
-      <Box sx={{ flexShrink: { sm: 0 } }}>
+      <Box sx={{ flexShrink: 0 }}>
         <Link href={detailHref} color="inherit">
           <Image
+            ratio="4/3"
             alt={title}
-            src={image}
+            src={imageSrc}
             sx={{
-              height: 1,
-              width: { sm: 240, md: 270 },
-              ...(vertical && {
-                width: { sm: 1 },
-              }),
+              width: 1,
+              bgcolor: 'background.neutral',
             }}
           />
         </Link>
       </Box>
 
-      <Stack spacing={3} sx={{ p: 3 }} width="100%">
+      <Stack spacing={3} sx={{ p: 3, flexGrow: 1 }} width="100%">
         <Stack
           spacing={{
             xs: 3,
@@ -64,22 +74,20 @@ export default function ElearningPublicCourseItem({ course, vertical }) {
           }}
         >
           <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="h4">{fCurrency(price)}</Typography>
+            <Typography variant="h4">{displayPrice}</Typography>
+            {courseCount > 0 && (
+              <Chip size="small" variant="soft" color="primary" label={`${courseCount} courses`} />
+            )}
           </Stack>
 
           <Stack spacing={1}>
             <Link href={detailHref} color="inherit">
-              <TextMaxLine variant="h6">{title}</TextMaxLine>
+              <TextMaxLine variant="h6" persistent>
+                {title}
+              </TextMaxLine>
             </Link>
 
-            <TextMaxLine
-              variant="body2"
-              sx={{
-                ...(vertical && {
-                  display: { sm: 'none' },
-                }),
-              }}
-            >
+            <TextMaxLine variant="body2" line={3} persistent>
               {description}
             </TextMaxLine>
           </Stack>
@@ -116,7 +124,7 @@ export default function ElearningPublicCourseItem({ course, vertical }) {
             color="secondary"
             sx={{ ml: 'auto' }}
           >
-            Buy now
+            {ctaLabel || 'Buy now'}
           </Button>
         </Stack>
       </Stack>
@@ -134,6 +142,10 @@ ElearningPublicCourseItem.propTypes = {
       description: PropTypes.string,
       image: PropTypes.string,
       slug: PropTypes.string,
+      ctaLabel: PropTypes.string,
+      priceLabel: PropTypes.string,
+      courseCount: PropTypes.number,
+      catalogType: PropTypes.string,
     }),
   }),
   vertical: PropTypes.bool,
