@@ -9,7 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 // import { _mock } from 'src/_mock';
-import { paths } from 'src/routes/paths';
+// import { paths } from 'src/routes/paths';
 // import { useBoolean } from 'src/hooks/use-boolean';
 import { RouterLink } from 'src/routes/components';
 // import { PlayerDialog } from 'src/components/player';
@@ -85,7 +85,9 @@ export default function ElearningLandingHero() {
               </Typography>
 
               <Stack spacing={3} alignItems="center" direction={{ xs: 'column', md: 'row' }}>
-                <Link component={RouterLink} href={paths.eLearning.courses}>
+                {/* /courses is now 308-redirected to learn.ryzolve.app —
+                    point at the kept catalog at /e-learning/courses. */}
+                <Link component={RouterLink} href="/e-learning/courses">
                   <Button color="secondary" size="large" variant="contained">
                     Start Learning
                   </Button>

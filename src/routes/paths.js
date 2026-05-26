@@ -37,7 +37,7 @@ export const paths = {
   // E-learning
   eLearning: {
     root: '/e-learning',
-    courses: '/courses',
+    courses: '/e-learning/courses',
     course: `/course`,
     posts: '/e-learning/posts',
     post: `/e-learning/post`,

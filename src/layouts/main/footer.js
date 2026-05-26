@@ -60,7 +60,9 @@ export default function Footer() {
 
   const feturedLinks = [
     { title: 'Home', path: '/' },
-    { title: 'Courses', path: '/courses' },
+    // /courses is 308-redirected to learn.ryzolve.app — point at the kept
+    // marketing catalog at /e-learning/courses instead.
+    { title: 'Courses', path: '/e-learning/courses' },
     { title: 'About Us', path: '/about-us' },
     { title: 'Ryzolve', path: 'https://s.ryzolve.com/' },
   ];

@@ -1,21 +1,10 @@
-'use client';
-
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import 'react-toastify/dist/ReactToastify.css';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { redirect } from 'next/navigation';
 
-import MainLayout from 'src/layouts/main';
-import ElearningCourseView from 'src/sections/_elearning/view/elearning-course-view';
-
-// ----------------------------------------------------------------------
-
+// Legacy Strapi course URLs now point to the public course detail page backed
+// by the new platform catalog.
 export default function ElearningCoursePage({ params }) {
-  return (
-    <MainLayout>
-      <ElearningCourseView courseId={params.id} />
-    </MainLayout>
-  );
+  redirect(`/e-learning/course?slug=${encodeURIComponent(params.id)}`);
 }
 
 ElearningCoursePage.propTypes = {
