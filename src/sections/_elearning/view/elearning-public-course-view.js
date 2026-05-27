@@ -254,7 +254,9 @@ export default function ElearningPublicCourseView() {
 // ----------------------------------------------------------------------
 
 function BuyCard({ course, buyHref, isAgencyBundle }) {
-  const priceText = course.priceLabel || fCurrency(course.price);
+  const agencyPlans = isAgencyBundle ? course.plans ?? [] : [];
+  const priceText =
+    agencyPlans.length > 0 ? 'Agency plans' : course.priceLabel || fCurrency(course.price);
 
   return (
     <Card sx={{ p: 3, borderRadius: 2 }}>
@@ -298,16 +300,83 @@ function BuyCard({ course, buyHref, isAgencyBundle }) {
           </Stack>
         </Stack>
 
-        <Button
-          component="a"
-          href={buyHref}
-          variant="contained"
-          size="large"
-          color="secondary"
-          sx={{ width: 1 }}
-        >
-          {course.ctaLabel || 'Buy now'}
-        </Button>
+        {agencyPlans.length > 0 ? (
+          <Stack spacing={2}>
+            <Typography variant="subtitle2">Choose an agency plan:</Typography>
+
+            {agencyPlans.map((plan) => (
+              <Box
+                key={plan.id}
+                sx={{
+                  p: 2,
+                  border: (theme) => `1px solid ${theme.palette.divider}`,
+                  borderRadius: 1.5,
+                  bgcolor: plan.isFeatured ? 'background.neutral' : 'transparent',
+                }}
+              >
+                <Stack spacing={2}>
+                  <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                    <Stack spacing={0.5} sx={{ pr: 2 }}>
+                      <Typography variant="subtitle1">{plan.name}</Typography>
+                      {plan.description && (
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                          {plan.description}
+                        </Typography>
+                      )}
+                    </Stack>
+
+                    <Typography variant="h5" sx={{ whiteSpace: 'nowrap' }}>
+                      {plan.priceLabel}
+                    </Typography>
+                  </Stack>
+
+                  <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
+                    <Iconify icon="carbon:user-multiple" sx={{ mr: 1 }} />
+                    {plan.maxLearners == null
+                      ? 'Unlimited learners'
+                      : `${plan.maxLearners.toLocaleString()} learners`}
+                  </Stack>
+
+                  {plan.features.length > 0 && (
+                    <Stack spacing={1}>
+                      {plan.features.slice(0, 3).map((feature) => (
+                        <Stack key={feature} direction="row" alignItems="flex-start">
+                          <Iconify
+                            icon="carbon:checkmark"
+                            sx={{ mt: 0.25, mr: 1, width: 16, height: 16, color: 'primary.main' }}
+                          />
+                          <Typography variant="body2">{feature}</Typography>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  )}
+
+                  <Button
+                    component="a"
+                    href={plan.buyHref}
+                    variant="contained"
+                    size="large"
+                    color="secondary"
+                    sx={{ width: 1 }}
+                  >
+                    Buy {plan.name}
+                  </Button>
+                </Stack>
+              </Box>
+            ))}
+          </Stack>
+        ) : (
+          <Button
+            component="a"
+            href={buyHref}
+            variant="contained"
+            size="large"
+            color="secondary"
+            sx={{ width: 1 }}
+          >
+            {course.ctaLabel || 'Buy now'}
+          </Button>
+        )}
       </Stack>
     </Card>
   );
