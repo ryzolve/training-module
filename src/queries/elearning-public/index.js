@@ -22,6 +22,8 @@ const centsToDollars = (cents) => {
   return Math.round(cents) / 100;
 };
 
+const formatDollars = (cents) => `$${centsToDollars(cents)}`;
+
 const fetchJson = async (path) => {
   const res = await fetch(`${API_BASE}${path}`, {
     cache: 'no-store',
@@ -120,6 +122,21 @@ const adaptTrainingPackageDetail = (item, plans = []) => {
   const sortedPlans = [...plans].sort((a, b) => a.monthlyPriceCents - b.monthlyPriceCents);
   const lowestPlan = sortedPlans[0];
   const featurePoints = sortedPlans.flatMap((plan) => plan.features || []);
+  const adaptedPlans = sortedPlans.map((plan) => ({
+    id: plan.id,
+    name: plan.name || '',
+    description: plan.description || '',
+    features: plan.features || [],
+    maxLearners: plan.maxLearners,
+    monthlyPriceCents: plan.monthlyPriceCents,
+    priceLabel: `${formatDollars(plan.monthlyPriceCents)}/mo`,
+    isFeatured: !!plan.isFeatured,
+    buyHref: getNewPlatformCourseUrl(item.slug, {
+      catalogType: 'agency_bundle',
+      packageId: item.id,
+      planId: plan.id,
+    }),
+  }));
 
   return {
     id: `package-${item.slug}`,
@@ -130,7 +147,7 @@ const adaptTrainingPackageDetail = (item, plans = []) => {
       price: centsToDollars(lowestPlan?.monthlyPriceCents),
       priceSale: 0,
       priceLabel: lowestPlan
-        ? `From $${centsToDollars(lowestPlan.monthlyPriceCents)}/mo`
+        ? `From ${formatDollars(lowestPlan.monthlyPriceCents)}/mo`
         : 'Agency plans',
       bestSeller: false,
       time: 0,
@@ -161,6 +178,7 @@ const adaptTrainingPackageDetail = (item, plans = []) => {
       packageId: item.id,
       courseCount: item.courseCount,
       validityMonths: item.validityMonths,
+      plans: adaptedPlans,
       catalogType: 'agency_bundle',
       ctaLabel: 'View agency plans',
     },
@@ -212,8 +230,17 @@ export const getPublicCourseData = async (slug) => {
 
 // External link targets on the new platform. Individual course links can pass
 // ?auto=1 to trigger checkout there; agency packages use the agency signup flow.
-export const getNewPlatformCourseUrl = (slug, { autoBuy = false, catalogType } = {}) => {
-  if (catalogType === 'agency_bundle') return `${AGENCY_APP_BASE}/auth/register`;
+export const getNewPlatformCourseUrl = (
+  slug,
+  { autoBuy = false, catalogType, packageId, planId } = {}
+) => {
+  if (catalogType === 'agency_bundle') {
+    const params = new URLSearchParams();
+    if (packageId) params.set('packageId', String(packageId));
+    if (planId) params.set('planId', String(planId));
+    const query = params.toString();
+    return `${AGENCY_APP_BASE}/auth/register${query ? `?${query}` : ''}`;
+  }
 
   const base = `${LEARN_APP_BASE}/courses`;
   if (!slug) return base;
