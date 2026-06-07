@@ -12,11 +12,6 @@ const LEARN_APP_BASE = 'https://learn.ryzolve.app';
 const AGENCY_APP_BASE = 'https://agency.ryzolve.app';
 const AGENCY_PACKAGE_IMAGE = '/assets/illustrations/illustration_courses_hero.svg';
 
-const minutesToHours = (minutes) => {
-  if (typeof minutes !== 'number' || minutes <= 0) return 0;
-  return Math.round((minutes / 60) * 10) / 10;
-};
-
 const centsToDollars = (cents) => {
   if (typeof cents !== 'number') return 0;
   return Math.round(cents) / 100;
@@ -47,7 +42,6 @@ const adaptCourseListItem = (item) => ({
     price: centsToDollars(item.priceCents),
     priceSale: 0,
     bestSeller: false,
-    time: minutesToHours(item.durationMinutes),
     rating: 0,
     totalReviews: 0,
     totalStudents: 0,
@@ -70,7 +64,6 @@ const adaptTrainingPackageListItem = (item) => ({
     priceSale: 0,
     priceLabel: 'Agency plans',
     bestSeller: false,
-    time: 0,
     rating: 0,
     totalReviews: 0,
     totalStudents: 0,
@@ -94,7 +87,6 @@ const adaptCourseDetail = ({ course, pkg }) => ({
     price: centsToDollars(pkg?.priceCents),
     priceSale: 0,
     bestSeller: false,
-    time: minutesToHours(course.durationMinutes),
     rating: 0,
     totalReviews: 0,
     totalStudents: 0,
@@ -150,7 +142,6 @@ const adaptTrainingPackageDetail = (item, plans = []) => {
         ? `From ${formatDollars(lowestPlan.monthlyPriceCents)}/mo`
         : 'Agency plans',
       bestSeller: false,
-      time: 0,
       rating: 0,
       totalReviews: 0,
       totalStudents: 0,

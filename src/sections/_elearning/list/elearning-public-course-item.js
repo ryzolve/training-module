@@ -10,7 +10,6 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
 import { fCurrency } from 'src/utils/format-number';
 import TextMaxLine from 'src/components/text-max-line';
 import { getNewPlatformCourseUrl } from 'src/queries/elearning-public';
@@ -25,7 +24,6 @@ export default function ElearningPublicCourseItem({ course, vertical }) {
   const {
     title,
     price,
-    time,
     description,
     image,
     slug,
@@ -110,12 +108,6 @@ export default function ElearningPublicCourseItem({ course, vertical }) {
           justifyContent="space-between"
           sx={{ color: 'text.disabled', '& > *:not(:last-child)': { mr: 2.5 } }}
         >
-          {time > 0 && (
-            <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
-              <Iconify icon="carbon:time" sx={{ mr: 1 }} /> {`${time} hours`}
-            </Stack>
-          )}
-
           <Button
             component="a"
             href={buyHref}
@@ -138,7 +130,6 @@ ElearningPublicCourseItem.propTypes = {
     attributes: PropTypes.shape({
       title: PropTypes.string,
       price: PropTypes.number,
-      time: PropTypes.number,
       description: PropTypes.string,
       image: PropTypes.string,
       slug: PropTypes.string,
