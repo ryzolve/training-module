@@ -181,12 +181,6 @@ export default function ElearningPublicCourseView() {
                       '& > *': { my: 0.5, mr: 3 },
                     }}
                   >
-                    {course.time > 0 && (
-                      <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
-                        <Iconify icon="carbon:time" sx={{ mr: 1 }} /> {`${course.time} Hours`}
-                      </Stack>
-                    )}
-
                     {course.courseCount > 0 && (
                       <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
                         <Iconify icon="carbon:book" sx={{ mr: 1 }} />
@@ -269,13 +263,6 @@ function BuyCard({ course, buyHref, isAgencyBundle }) {
           <Typography variant="subtitle2">
             {isAgencyBundle ? 'This package includes:' : 'This course includes:'}
           </Typography>
-
-          {course.time > 0 && (
-            <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
-              <Iconify icon="carbon:time" sx={{ mr: 1 }} />
-              {`${course.time} hours of content`}
-            </Stack>
-          )}
 
           {course.courseCount > 0 && (
             <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle2' }}>
